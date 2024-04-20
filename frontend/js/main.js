@@ -7,6 +7,23 @@ $(document).ready(function () {
     // Save name to session
     sessionStorage.setItem("name", name);
 
+    // Send GET request to get the existing dates
+    $.get("http://localhost/backend/db/dataHandler.php", { action: 'getDates' }, function(data) {
+        // Parse the data into a JavaScript object
+        var dates = JSON.parse(data);
+
+        // Check if there are any dates
+        if (dates.length > 0) {
+            // Hide the no dates message
+            $('#noDatesMessage').hide();
+
+            // Add each date to the datesContainer div
+            for (var i = 0; i < dates.length; i++) {
+                $('#datesContainer').append('<p>' + dates[i] + '</p>');
+            }
+        }
+    });
+
     var selectedDate;
 
     // Initialize datepicker
