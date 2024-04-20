@@ -1,11 +1,13 @@
 $(document).ready(function () {
-    var name = prompt("Please enter your name");
-    while (name === null || name === "") {
-        name = prompt("Please enter your name");
+    if (!sessionStorage.getItem('username')) {
+        var username = null;
+        // Keep asking for the user's name until a valid name is entered
+        while (!username || username.trim() === '') {
+            username = prompt("Please enter your name");
+        }
+        // Save the username in sessionStorage
+        sessionStorage.setItem('username', username);
     }
-
-    // Save name to session
-    sessionStorage.setItem("name", name);
 
     // Send GET request to get the existing dates
     $.get("http://localhost/backend/db/dataHandler.php", { action: 'getDates' }, function(data) {
