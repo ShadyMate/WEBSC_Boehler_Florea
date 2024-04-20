@@ -7,6 +7,10 @@
 -- Server-Version: 10.4.32-MariaDB
 -- PHP-Version: 8.2.12
 
+CREATE USER 'bif2webscriptinguser'@'localhost' IDENTIFIED BY 'bif2021';
+GRANT USAGE ON *.* TO 'bif2webscriptinguser'@'localhost';
+GRANT ALL PRIVILEGES ON `appointmentfinder`.* TO 'bif2webscriptinguser'@'localhost';
+
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
