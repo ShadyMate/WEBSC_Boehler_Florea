@@ -1,7 +1,7 @@
 <?php
-//class for Appointment
-//it contains all varaibles as database table
+// Alle Variablen wie in der DB
 class Appointment {
+    // Variablen
     public $id;
     public $titel;
     public $ort;
@@ -9,6 +9,8 @@ class Appointment {
     public $durationTime;
     public $info;
 
+    // Konstruktor der Klasse
+    // Initialisiert die Variablen mit den übergebenen Werten
     function __construct($titel, $ort, $durationDate, $durationTime, $info) {
         $this->titel = $titel;
         $this->ort = $ort;
@@ -16,6 +18,8 @@ class Appointment {
         $this->durationTime = $durationTime;
         $this->info = $info;
     }
+
+    // Getter und Setter Methoden für die Variablen
     public function getID() { return $this->id; }
     public function setID($id) { $this->id=$id; }
     public function getTitel() { return $this->titel; }

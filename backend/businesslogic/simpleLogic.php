@@ -1,9 +1,12 @@
 <?php
-include("../db/dataHandler.php");
-
+include("db/dataHandler.php");
+//this class handles requests by passing method and parameters
+//for each function in dataHandler.php there is case in switch
 class SimpleLogic
 {
+
     private $dh;
+
     function __construct()
     {
         $this->dh = new DataHandler();
@@ -11,19 +14,28 @@ class SimpleLogic
 
     function handleRequest($method, $param)
     {
-        switch ($method) {
-            case "queryPersons":
-                $res = $this->dh->queryPersons();
+        switch ($method)
+        {
+            case "queryAppointments":
+                $res = $this->dh->queryAppointments();
                 break;
-            case "queryPersonById":
-                $res = $this->dh->queryPersonById($param);
+            case "queryDatesByAppointment":
+                $res = $this->dh->queryDatesByAppointment($param);
                 break;
-            case "queryPersonByName":
-                $res = $this->dh->queryPersonByName($param);
+            case "queryPostAppointment":
+                $res = $this->dh->queryPostAppointment($param);
                 break;
-            // Hier wird die neue Funktion aufgerufen
-            case "queryPersonByClass":
-                $res = $this->dh->queryPersonByClass($param);
+            case "queryPostDateTimeArray":
+                $res = $this->dh->queryPostDateTimeArray($param);
+                break;
+            case "queryBookAppointment":
+                $res = $this->dh->queryBookAppointment($param);
+                break;
+            case "queryDeleteAppointment":
+                $res = $this->dh->queryDeleteAppointment($param);
+                break;
+            case "queryVotingsByAppointment":
+                $res = $this->dh->queryVotingsByAppointment($param);
                 break;
             default:
                 $res = null;
@@ -31,4 +43,6 @@ class SimpleLogic
         }
         return $res;
     }
+
+    function getDH() { return $this->dh; }
 }
