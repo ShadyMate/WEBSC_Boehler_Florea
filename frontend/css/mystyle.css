@@ -1,6 +1,7 @@
 body {
     padding: 20px;
     background-color: #121315 !important;
+    color: #fff !important;
 }
 #createDate {
     margin-bottom: 20px;
@@ -28,6 +29,7 @@ body {
     border: 1px solid #ddd;
     border-radius: 5px;
 }
-div {
-    background-color: #3a3a3c;
+#timeForm #calendar #datesContainer
+{
+    background-color: green;
 }
