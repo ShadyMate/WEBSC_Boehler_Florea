@@ -15,6 +15,46 @@ $(document).ready(function () {
         param: 'hi'
     };
 
+    //Opens up the date for further interaction
+    $(document).on('click', '#datesContainer tr', function() {
+        // Get the id from the data-id attribute
+        var id = $(this).data('id');
+    
+        // Store the id in the form
+        $('#voteForm').data('id', id);
+    
+        // Show the modal
+        $('#voteModal').modal('show');
+    });
+
+    $(document).on('submit', '#voteForm', function(e) {
+        // Prevent the form from submitting normally
+        e.preventDefault();
+    
+        // Get the id from the data-id attribute
+        var id = $(this).data('id');
+    
+        // Get the vote and comment
+        var vote = $('#vote').val();
+        var comment = $('#comment').val();
+    
+        // AJAX call to submit the vote and comment
+        $.ajax({
+            type: "POST",
+            url: "../backend/businesslogic/simpleLogic.php",
+            data: { action: 'submitVote', id: id, vote: vote, comment: comment },
+            success: function(response) {
+                // Handle success
+                console.log(response);
+                $('#voteModal').modal('hide');
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                // Handle error
+                console.error(textStatus, errorThrown);
+            }
+        });
+    });
+
     // First AJAX call to get the dates
     $.ajax({
         type: "GET",
@@ -35,7 +75,6 @@ $(document).ready(function () {
                     .append('<th>Location</th>')
                     .append('<th>Date</th>')
                     .append('<th>Time</th>')
-                    .append('<th>Delete</th>');
 
                 // Add a row for each object in the response
                 for (var i = 0; i < response.length; i++) {
@@ -50,28 +89,29 @@ $(document).ready(function () {
                         .append('<td>' + date + '</td>')
                         .append('<td>' + time + '</td>');
 
-                    // Add delete button
-                    var deleteButton = $('<td><button class="delete-button" data-id="' + id + '">Delete</button></td>').appendTo(row);
                 }
             }
         }
     });
 
     // Event handler for delete button click
-    $(document).on('click', '.delete-button', function () {
-        var id = $(this).data('id');
+    $(document).on('click', '#deleteButton', function() {
+        // Get the id from the data-id attribute
+        var id = $('#voteForm').data('id');
+    
+        // AJAX call to delete the appointment
         $.ajax({
             type: "POST",
             url: "../backend/businesslogic/simpleLogic.php",
-            cache: false,
-            data: { action: 'deleteAppointment', param: parseInt(id) },
-            dataType: "json",
-            success: function (response) {
-                console.log("Deleted appointment: ", response);
-                // You might want to refresh the appointments list here
+            data: { action: 'deleteAppointment', id: id },
+            success: function(response) {
+                // Handle success
+                console.log(response);
+                $('#voteModal').modal('hide');
             },
-            error: function (jqXHR, textStatus, errorThrown) {
-                console.error("Error: ", textStatus, ", ", errorThrown);
+            error: function(jqXHR, textStatus, errorThrown) {
+                // Handle error
+                console.error(textStatus, errorThrown);
             }
         });
     });

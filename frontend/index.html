@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="css/mystyle.css">
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
@@ -28,6 +29,36 @@
     <input type="time" id="end" class="form-control">
     <button id="confirm" class="btn btn-success">Confirm</button>
 </div>
+
+<div class="modal fade" id="voteModal" tabindex="-1" role="dialog" aria-labelledby="voteModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="voteModalLabel">Vote and Comment</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form id="voteForm">
+            <div class="form-group">
+                <label for="vote">Vote</label>
+                <div id="voteButtons">
+                    <button type="button" class="btn btn-success" id="upvoteButton"><i class="fas fa-arrow-up"></i></button>
+                    <button type="button" class="btn btn-danger" id="downvoteButton"><i class="fas fa-arrow-down"></i></button>
+                </div>
+            </div>
+            <div class="form-group">
+              <label for="comment">Comment</label>
+              <textarea class="form-control" id="comment" rows="3"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </form>
+          <button id="deleteButton" class="btn btn-danger">Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
 <div id="datesContainer" class="bg-dark">
     <p id="noDatesMessage">Currently no dates scheduled.</p>
