@@ -10,7 +10,7 @@ $(document).ready(function () {
     }
 
     // Send GET request to get the existing dates
-    $.get("http://localhost/backend/db/dataHandler.php", { action: 'getDates' }, function(data) {
+    $.get("../localhost/backend/db/dataHandler.php", { action: 'getDates' }, function(data) {
         // Parse the data into a JavaScript object
         var dates = JSON.parse(data);
 
@@ -54,7 +54,7 @@ $(document).ready(function () {
         $("#timeForm").hide();
 
         // Send POST request
-        $.post("http://localhost/backend/db/dataHandler.php", { action: 'queryPostAppointment', param: title + ',' + place + ',' + hoursToAdd + ',' + info }, function (data) {
+        $.post("../localhost/backend/db/dataHandler.php", { action: 'queryPostAppointment', param: title + ',' + place + ',' + hoursToAdd + ',' + info }, function (data) {
             console.log("Data inserted: " + data);
         });
     });
