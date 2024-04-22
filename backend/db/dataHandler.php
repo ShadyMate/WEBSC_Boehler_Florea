@@ -1,6 +1,6 @@
 <?php
-include("models/appointment.php");
-include("models/date.php");
+include("../models/appointment.php");
+include("../models/date.php");
 include("db.php");
 
 class DataHandler
