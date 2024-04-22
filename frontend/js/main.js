@@ -55,6 +55,18 @@ $(document).ready(function () {
         });
     });
 
+    // Retrieving data-id attribute from the table row
+    $(document).on('click', 'tr', function() {
+        // Get the id from the data-id attribute
+        var id = $(this).data('id');
+    
+        // Store the id in the form
+        $('#voteForm').data('id', id);
+    
+        // Show the modal
+        $('#voteModal').modal('show');
+    });
+
     // First AJAX call to get the dates
     $.ajax({
         type: "GET",
@@ -84,11 +96,11 @@ $(document).ready(function () {
                     var date = response[i].durationDate;
                     var time = response[i].durationTime;
                     var row = $('<tr>').appendTo(table)
+                        .data('id', id)  // Store the id
                         .append('<td>' + title + '</td>')
                         .append('<td>' + location + '</td>')
                         .append('<td>' + date + '</td>')
                         .append('<td>' + time + '</td>');
-
                 }
             }
         }
@@ -103,11 +115,14 @@ $(document).ready(function () {
         $.ajax({
             type: "POST",
             url: "../backend/businesslogic/simpleLogic.php",
-            data: { action: 'deleteAppointment', id: id },
+            data: { action: 'queryDeleteAppointment', param: id },
             success: function(response) {
                 // Handle success
                 console.log(response);
                 $('#voteModal').modal('hide');
+
+                // Refresh the page
+                location.reload();
             },
             error: function(jqXHR, textStatus, errorThrown) {
                 // Handle error
