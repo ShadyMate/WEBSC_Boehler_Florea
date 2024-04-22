@@ -193,4 +193,28 @@ $(document).ready(function () {
             }
         });
     });
+    function checkExpiredAppointments() {
+        // Get all appointment rows
+        var rows = $('#datesContainer tr');
+
+        // Get current date and time
+        var now = new Date();
+
+        // Iterate over each row
+        rows.each(function() {
+            // Get date and time from the row
+            var date = new Date($(this).find('td:nth-child(3)').text() + ' ' + $(this).find('td:nth-child(4)').text());
+
+            // Check if the date and time is in the past
+            if (date < now) {
+                // Add 'expired' class to the row
+                $(this).addClass('expired');
+            }
+        });
+    }
+
+// Call the function when the document is ready
+    $(document).ready(function() {
+        checkExpiredAppointments();
+    });
 });

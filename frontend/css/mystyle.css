@@ -41,3 +41,8 @@ body {
     margin-bottom: 10px;
     border-radius: 5px;
 }
+.expired {
+    color: grey;
+    font-style: italic;
+    border: 1px solid red;
+}
