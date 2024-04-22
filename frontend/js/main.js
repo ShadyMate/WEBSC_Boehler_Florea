@@ -1,4 +1,7 @@
 $(document).ready(function () {
+    //
+    // Check if the user's name is stored in sessionStorage
+    //
     if (!sessionStorage.getItem('username')) {
         var username = null;
         // Keep asking for the user's name until a valid name is entered
@@ -8,12 +11,6 @@ $(document).ready(function () {
         // Save the username in sessionStorage
         sessionStorage.setItem('username', username);
     }
-
-    // Send GET request to get the existing dates
-    var dataToSend = {
-        action: 'queryAppointments',
-        param: 'hi'
-    };
 
     // Retrieving data-id and title attribute from the table row
     $(document).on('click', 'tr', function () {
@@ -73,7 +70,16 @@ $(document).ready(function () {
         $('#voteModal').modal('show');
     });
 
-    // First AJAX call to get the dates
+
+    // Send GET request to get the existing dates
+    var dataToSend = {
+        action: 'queryAppointments',
+        param: 'hi'
+    };
+
+    //
+    // First AJAX call to get the list of dates
+    //
     $.ajax({
         type: "GET",
         url: "../backend/businesslogic/simpleLogic.php",
@@ -108,11 +114,14 @@ $(document).ready(function () {
                         .append('<td>' + date + '</td>')
                         .append('<td>' + time + '</td>');
                 }
+                checkExpiredAppointments();
             }
         }
     });
 
+    //
     // Event handler for delete button click
+    //
     $(document).on('click', '#deleteButton', function() {
         // Get the id from the data-id attribute
         var id = $('#voteForm').data('id');
@@ -139,7 +148,9 @@ $(document).ready(function () {
 
     var selectedDate;
 
-    // Initialize datepicker
+    //
+    // Initialize datepicker (UI for selecting date)
+    //
     $("#calendar").datepicker({
         onSelect: function (dateText, inst) {
             selectedDate = dateText;
@@ -147,13 +158,17 @@ $(document).ready(function () {
         }
     });
 
+    //
     // Show calendar and form when "Create New Date" button is clicked
+    //
     $("#createDate").click(function () {
         $("#calendar").show();
         $("#timeForm").show();
     });
 
+    //
     // Hide calendar and form and log date and times when "Confirm" button is clicked
+    //
     $("#confirm").click(function () {
         var title = $("#title").val();
         var place = $("#place").val();
@@ -176,7 +191,9 @@ $(document).ready(function () {
 
         console.log("Data to be sent: ", dataToSend);
 
-        // Make AJAX call
+        //
+        // Make AJAX call to save the appointment
+        //
         $.ajax({
             type: "POST",
             url: "../backend/businesslogic/simpleLogic.php",
@@ -193,28 +210,30 @@ $(document).ready(function () {
             }
         });
     });
+
+    //
+    // Check if any appointments are expired
+    //
     function checkExpiredAppointments() {
         // Get all appointment rows
         var rows = $('#datesContainer tr');
-
+    
         // Get current date and time
         var now = new Date();
-
+    
         // Iterate over each row
         rows.each(function() {
             // Get date and time from the row
             var date = new Date($(this).find('td:nth-child(3)').text() + ' ' + $(this).find('td:nth-child(4)').text());
-
+    
             // Check if the date and time is in the past
             if (date < now) {
                 // Add 'expired' class to the row
                 $(this).addClass('expired');
+    
+                // Disable comments and votes for this row
+                $(this).find('.comment-button, .vote-button').prop('disabled', true);
             }
         });
     }
-
-// Call the function when the document is ready
-    $(document).ready(function() {
-        checkExpiredAppointments();
-    });
 });
