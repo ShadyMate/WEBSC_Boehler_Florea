@@ -1,5 +1,6 @@
 body {
     padding: 20px;
+    background-color: #121315 !important;
 }
 #createDate {
     margin-bottom: 20px;
@@ -26,4 +27,7 @@ body {
     padding: 20px;
     border: 1px solid #ddd;
     border-radius: 5px;
+}
+div {
+    background-color: #3a3a3c;
 }
