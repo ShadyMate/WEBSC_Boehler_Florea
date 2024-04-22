@@ -1,7 +1,6 @@
 <?php
 include("../db/dataHandler.php");
-//this class handles requests by passing method and parameters
-//for each function in dataHandler.php there is case in switch
+// Für jede Funktion in datahandler gibt es einen switchcase
 class SimpleLogic
 {
     
@@ -61,5 +60,5 @@ if (isset($_POST['action']) && isset($_POST['param'])) {
 }
 
 $result = $simpleLogic->handleRequest($method, $param);
-// You might want to send the result back to the client
+// Hiermit kann man an den Client das ergebnis senden
 echo json_encode($result);
