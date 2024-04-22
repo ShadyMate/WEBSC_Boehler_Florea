@@ -60,6 +60,7 @@ class DataHandler
     // Methode zum Posten eines Termins
     public function queryPostAppointment($param)
     {
+        echo "I LIVE";
         // Aufteilen des Parameters in einzelne Teile
         $pieces=explode(",",$param);
 

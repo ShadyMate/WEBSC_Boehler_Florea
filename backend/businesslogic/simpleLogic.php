@@ -1,10 +1,10 @@
 <?php
-include("db/dataHandler.php");
+include("../db/dataHandler.php");
 //this class handles requests by passing method and parameters
 //for each function in dataHandler.php there is case in switch
 class SimpleLogic
 {
-
+    
     private $dh;
 
     function __construct()
@@ -23,6 +23,7 @@ class SimpleLogic
                 $res = $this->dh->queryDatesByAppointment($param);
                 break;
             case "queryPostAppointment":
+                echo "test";
                 $res = $this->dh->queryPostAppointment($param);
                 break;
             case "queryPostDateTimeArray":
@@ -43,6 +44,22 @@ class SimpleLogic
         }
         return $res;
     }
-
+    
     function getDH() { return $this->dh; }
 }
+
+$simpleLogic = new SimpleLogic();
+if (isset($_POST['action']) && isset($_POST['param'])) {
+    $method = $_POST['action'];
+    $param = $_POST['param'];
+} elseif (isset($_GET['action']) && isset($_GET['param'])) {
+    $method = $_GET['action'];
+    $param = $_GET['param'];
+} else {
+    echo "no action or param set";
+    exit;
+}
+
+$result = $simpleLogic->handleRequest($method, $param);
+// You might want to send the result back to the client
+echo json_encode($result);

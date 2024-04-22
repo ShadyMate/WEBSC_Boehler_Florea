@@ -10,18 +10,63 @@ $(document).ready(function () {
     }
 
     // Send GET request to get the existing dates
-    $.get("../localhost/backend/db/dataHandler.php", { action: 'getDates' }, function(data) {
-        // Parse the data into a JavaScript object
-        var dates = JSON.parse(data);
+    var dataToSend = {
+        action: 'queryAppointments',
+        param: 'hi'
+    };
 
-        // Check if there are any dates
-        if (dates.length > 0) {
-            // Hide the no dates message
-            $('#noDatesMessage').hide();
-
-            // Add each date to the datesContainer div
-            for (var i = 0; i < dates.length; i++) {
-                $('#datesContainer').append('<p>' + dates[i] + '</p>');
+    $.ajax({
+        type: "GET",
+        url: "../backend/businesslogic/simpleLogic.php",
+        cache: false,
+        data: dataToSend,
+        dataType: "json",
+        success: function (response) {
+            // Check if there are any dates
+            if (response.length > 0) {
+                // Hide the no dates message
+                $('#noDatesMessage').hide();
+        
+                // Create table and add headers
+                var table = $('<table>').appendTo('#datesContainer');
+                $('<tr>').appendTo(table)
+                    .append('<th>Title</th>')
+                    .append('<th>Location</th>')
+                    .append('<th>Date</th>')
+                    .append('<th>Time</th>')
+                    .append('<th>Delete</th>');
+        
+                // Add a row for each object in the response
+                for (var i = 0; i < response.length; i++) {
+                    var title = response[i].titel;
+                    var location = response[i].ort;
+                    var date = response[i].durationDate;
+                    var time = response[i].durationTime;
+                    var row = $('<tr>').appendTo(table)
+                        .append('<td>' + title + '</td>')
+                        .append('<td>' + location + '</td>')
+                        .append('<td>' + date + '</td>')
+                        .append('<td>' + time + '</td>');
+                    
+                    // Add delete button
+                    var deleteButton = $('<td><button>Delete</button></td>').appendTo(row);
+                    deleteButton.click(function() {
+                        $.ajax({
+                            type: "POST",
+                            url: "../backend/businesslogic/simpleLogic.php",
+                            cache: false,
+                            data: { action: 'queryDeleteAppointment', param: title },
+                            dataType: "json",
+                            success: function(response) {
+                                console.log("Deleted appointment: ", response);
+                                // You might want to refresh the appointments list here
+                            },
+                            error: function(jqXHR, textStatus, errorThrown) {
+                                console.error("Error: ", textStatus, ", ", errorThrown);
+                            }
+                        });
+                    });
+                }
             }
         }
     });
@@ -45,17 +90,41 @@ $(document).ready(function () {
     // Hide calendar and form and log date and times when "Confirm" button is clicked
     $("#confirm").click(function () {
         var title = $("#title").val();
-        var place = $("#place").val();
-        var info = $("#info").val();
-        var startTime = $("#start").val();
-        var endTime = $("#end").val();
-        console.log("Title: " + title + ", Place: " + place + ", Info: " + info + ", Date: " + selectedDate + ", Start Time: " + startTime + ", End Time: " + endTime);
-        $("#calendar").hide();
-        $("#timeForm").hide();
+    var place = $("#place").val();
+    var info = $("#info").val();
+    var startTime = $("#start").val();
+    var endTime = $("#end").val();
 
-        // Send POST request
-        $.post("../localhost/backend/db/dataHandler.php", { action: 'queryPostAppointment', param: title + ',' + place + ',' + hoursToAdd + ',' + info }, function (data) {
-            console.log("Data inserted: " + data);
+    // Create Date objects for start and end times
+    var start = new Date(selectedDate + ' ' + startTime);
+    var end = new Date(selectedDate + ' ' + endTime);
+
+    // Calculate duration in hours
+    var duration = (end - start) / 1000 / 60 / 60;
+
+    // Prepare data to send
+    var dataToSend = { 
+        action: 'queryPostAppointment', 
+        param: title + ',' + place + ',' + duration + ',' + info 
+    };
+
+    console.log("Data to be sent: ", dataToSend);
+
+        // Make AJAX call
+        $.ajax({
+            type: "POST",
+            url: "../backend/businesslogic/simpleLogic.php",
+            cache: false,
+            data: dataToSend,
+            dataType: "json",
+            success: function (response) {
+                try {
+                    var data = JSON.parse(response);
+                    console.log(response);
+                } catch (error) {
+                    console.error("Error parsing response as JSON:", error);
+                }
+            }
         });
     });
 });
