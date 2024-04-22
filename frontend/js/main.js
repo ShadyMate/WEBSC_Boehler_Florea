@@ -15,14 +15,20 @@ $(document).ready(function () {
         param: 'hi'
     };
 
-    //Opens up the date for further interaction
-    $(document).on('click', '#datesContainer tr', function() {
+    // Retrieving data-id and title attribute from the table row
+    $(document).on('click', 'tr', function () {
         // Get the id from the data-id attribute
         var id = $(this).data('id');
-    
+
+        // Get the title from the first cell of the row
+        var title = $(this).find('td:first').text();
+
         // Store the id in the form
         $('#voteForm').data('id', id);
-    
+
+        // Set the title in the modal header
+        $('#voteModal .modal-title').text(title);
+
         // Show the modal
         $('#voteModal').modal('show');
     });
