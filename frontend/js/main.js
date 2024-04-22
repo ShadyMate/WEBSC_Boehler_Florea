@@ -15,6 +15,7 @@ $(document).ready(function () {
         param: 'hi'
     };
 
+    // First AJAX call to get the dates
     $.ajax({
         type: "GET",
         url: "../backend/businesslogic/simpleLogic.php",
@@ -26,7 +27,7 @@ $(document).ready(function () {
             if (response.length > 0) {
                 // Hide the no dates message
                 $('#noDatesMessage').hide();
-        
+
                 // Create table and add headers
                 var table = $('<table>').appendTo('#datesContainer');
                 $('<tr>').appendTo(table)
@@ -35,9 +36,10 @@ $(document).ready(function () {
                     .append('<th>Date</th>')
                     .append('<th>Time</th>')
                     .append('<th>Delete</th>');
-        
+
                 // Add a row for each object in the response
                 for (var i = 0; i < response.length; i++) {
+                    var id = response[i].id;
                     var title = response[i].titel;
                     var location = response[i].ort;
                     var date = response[i].durationDate;
@@ -47,28 +49,31 @@ $(document).ready(function () {
                         .append('<td>' + location + '</td>')
                         .append('<td>' + date + '</td>')
                         .append('<td>' + time + '</td>');
-                    
+
                     // Add delete button
-                    var deleteButton = $('<td><button>Delete</button></td>').appendTo(row);
-                    deleteButton.click(function() {
-                        $.ajax({
-                            type: "POST",
-                            url: "../backend/businesslogic/simpleLogic.php",
-                            cache: false,
-                            data: { action: 'queryDeleteAppointment', param: title },
-                            dataType: "json",
-                            success: function(response) {
-                                console.log("Deleted appointment: ", response);
-                                // You might want to refresh the appointments list here
-                            },
-                            error: function(jqXHR, textStatus, errorThrown) {
-                                console.error("Error: ", textStatus, ", ", errorThrown);
-                            }
-                        });
-                    });
+                    var deleteButton = $('<td><button class="delete-button" data-id="' + id + '">Delete</button></td>').appendTo(row);
                 }
             }
         }
+    });
+
+    // Event handler for delete button click
+    $(document).on('click', '.delete-button', function () {
+        var id = $(this).data('id');
+        $.ajax({
+            type: "POST",
+            url: "../backend/businesslogic/simpleLogic.php",
+            cache: false,
+            data: { action: 'deleteAppointment', param: parseInt(id) },
+            dataType: "json",
+            success: function (response) {
+                console.log("Deleted appointment: ", response);
+                // You might want to refresh the appointments list here
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.error("Error: ", textStatus, ", ", errorThrown);
+            }
+        });
     });
 
     var selectedDate;
@@ -90,25 +95,25 @@ $(document).ready(function () {
     // Hide calendar and form and log date and times when "Confirm" button is clicked
     $("#confirm").click(function () {
         var title = $("#title").val();
-    var place = $("#place").val();
-    var info = $("#info").val();
-    var startTime = $("#start").val();
-    var endTime = $("#end").val();
+        var place = $("#place").val();
+        var info = $("#info").val();
+        var startTime = $("#start").val();
+        var endTime = $("#end").val();
 
-    // Create Date objects for start and end times
-    var start = new Date(selectedDate + ' ' + startTime);
-    var end = new Date(selectedDate + ' ' + endTime);
+        // Create Date objects for start and end times
+        var start = new Date(selectedDate + ' ' + startTime);
+        var end = new Date(selectedDate + ' ' + endTime);
 
-    // Calculate duration in hours
-    var duration = (end - start) / 1000 / 60 / 60;
+        // Calculate duration in hours
+        var duration = (end - start) / 1000 / 60 / 60;
 
-    // Prepare data to send
-    var dataToSend = { 
-        action: 'queryPostAppointment', 
-        param: title + ',' + place + ',' + duration + ',' + info 
-    };
+        // Prepare data to send
+        var dataToSend = {
+            action: 'queryPostAppointment',
+            param: title + ',' + place + ',' + duration + ',' + info
+        };
 
-    console.log("Data to be sent: ", dataToSend);
+        console.log("Data to be sent: ", dataToSend);
 
         // Make AJAX call
         $.ajax({
