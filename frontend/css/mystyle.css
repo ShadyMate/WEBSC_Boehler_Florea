@@ -46,3 +46,21 @@ body {
     font-style: italic;
     border: 1px solid red;
 }
+@media only screen and (max-width: 600px) {
+    .content-container {
+        flex-direction: column;
+    }
+    #calendar, #timeForm, #datesContainer {
+        width: 100%;
+        margin-right: 0;
+        margin-bottom: 20px;
+    }
+}
+.content-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+}
+#calendar, #timeForm, #datesContainer {
+    margin-right: 20px;
+}
