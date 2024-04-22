@@ -1,4 +1,10 @@
 body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 100vh;
+    margin: 0;
     padding: 20px;
     background-color: #121315 !important;
     color: #fff !important;
