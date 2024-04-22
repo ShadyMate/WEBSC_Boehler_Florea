@@ -1,5 +1,6 @@
 <?php
 include("../db/dataHandler.php");
+// simpleLogic nimmt von serviceHandler und gibt an dataHandler
 // Für jede Funktion in datahandler gibt es einen switchcase
 class SimpleLogic
 {

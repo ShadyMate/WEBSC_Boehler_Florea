@@ -2,7 +2,7 @@
 include("../models/appointment.php");
 include("../models/date.php");
 include("db.php");
-
+// Nimmt von simpleLogic entgegen und gibt an Datenbank weiter
 class DataHandler
 {
     // Datenbankverbindung
