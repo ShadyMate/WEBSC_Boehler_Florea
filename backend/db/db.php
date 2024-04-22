@@ -10,7 +10,11 @@ class db
         if (!$selectAlreadyCreatedDatabase)
         {
             $createNewDb = "CREATE DATABASE IF NOT EXISTS `appointmentfinder`";
-            mysqli_query($this->con, $createNewDb);
+            if (mysqli_query($this->con, $createNewDb)) {
+                echo "Database created successfully.<br>";
+            } else {
+                echo "Error creating database: " . mysqli_error($this->con) . "<br>";
+            }
         }
         // DB wird selected
         $selectCreatedDatabase = mysqli_select_db($this->con, "appointmentfinder");
