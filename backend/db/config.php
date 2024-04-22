@@ -1,6 +1,6 @@
 <?php
 $host = 'localhost';
-$db   = 'meineDatenbank';
+$db   = 'appointmentfinder';
 $user = 'bif2webscriptinguser';
 $pass = 'bif2021';
 $charset = 'utf8mb4';
