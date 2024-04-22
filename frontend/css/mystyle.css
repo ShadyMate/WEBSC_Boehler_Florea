@@ -35,7 +35,9 @@ body {
     border: 1px solid #ddd;
     border-radius: 5px;
 }
-#timeForm #calendar #datesContainer
-{
-    background-color: green;
+#datesContainer tr {
+    border: 1px solid #fff;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
 }
